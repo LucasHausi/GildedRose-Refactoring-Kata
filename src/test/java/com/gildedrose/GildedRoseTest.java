@@ -98,6 +98,23 @@ class GildedRoseTest {
         assertTrue(testItems[0].quality <=50, "The Quality value should increase above 50");
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5, -10}) // Different sellIn values to demonstrate Sulfuras does not change
+    void givenSulfuras_whenUpdatingQuality_thenSellInAndQualityRemainUnchanged(int sellIn) {
+        // Arrange
+        int initialQuality = 80; // Sulfuras has a fixed quality of 80
+        Item sulfuras = new Item("Sulfuras, Hand of Ragnaros", sellIn, initialQuality);
+        Item[] items = {sulfuras};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(initialQuality, items[0].quality, "Sulfuras quality should remain unchanged regardless of sellIn value");
+        assertEquals(sellIn, items[0].sellIn, "Sulfuras sellIn should remain unchanged regardless of sellIn value");
+    }
+
 
 
 }
