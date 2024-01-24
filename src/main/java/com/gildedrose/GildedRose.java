@@ -19,6 +19,7 @@ class GildedRose {
                 }
             } else {
                 if (items[i].quality < 50) {
+                    //first increase of quality for special case
                     items[i].quality = items[i].quality + 1;
 
                     if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
@@ -54,6 +55,7 @@ class GildedRose {
                     }
                 } else {
                     if (items[i].quality < 50) {
+                        //second increase of quality for special case
                         items[i].quality = items[i].quality + 1;
                     }
                 }
