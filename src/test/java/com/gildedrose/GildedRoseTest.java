@@ -35,7 +35,7 @@ class GildedRoseTest {
     }
     @ParameterizedTest
     @ValueSource(ints = {1, 0, 3})
-    void givenNewItemWithZeroQuality_whenUpdatingQuality_thenInitialQualityDecrementsNotBelowZero(int initialQuality) {
+    void givenNewItemWithZeroQuality_whenUpdating_thenInitialQualityDecrementsNotBelowZero(int initialQuality) {
         // Arrange
         Item testItem = new Item("Sample Item", 5, initialQuality);
         Item[] testItems = {testItem};
@@ -45,6 +45,18 @@ class GildedRoseTest {
         app.updateQuality();
         // Assert
         assertTrue(testItems[0].quality >= 0, "The Quality value should be decreased below zero after two days");
+    }
+    @ParameterizedTest
+    @ValueSource(ints = {5, 2, 3})
+    void givenNewItemWithNegativeSellIn_whenUpdating_thenQualityDecrementsByTwo(int initialQuality) {
+        // Arrange
+        Item testItem = new Item("Sample Item", -1, initialQuality);
+        Item[] testItems = {testItem};
+        GildedRose app = new GildedRose(testItems);
+        // Act
+        app.updateQuality();
+        // Assert
+        assertEquals(initialQuality-2, testItems[0].quality, "The Quality value should be decreased by two after one day");
     }
     //Aged brie
     @ParameterizedTest
@@ -85,6 +97,7 @@ class GildedRoseTest {
         // Assert
         assertTrue(testItems[0].quality <=50, "The Quality value should increase above 50");
     }
+
 
 
 }
