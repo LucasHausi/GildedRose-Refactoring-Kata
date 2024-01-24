@@ -117,4 +117,91 @@ class GildedRoseTest {
 
 
 
+    // Test when there are 10 days or less to the concert
+    @ParameterizedTest
+    @ValueSource(ints = {6, 7, 8, 9, 10}) // Days 10 or less
+    void givenBackstagePass_when10DaysOrLessToUpdateQuality_thenQualityIncreasesByTwo(int sellIn) {
+        // Arrange
+        int initialQuality = 20;
+        Item backstagePass = new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, initialQuality);
+        Item[] items = {backstagePass};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(initialQuality + 2, items[0].quality,
+            "Backstage passes quality should increase by 2 when there are 10 days or less to the concert");
+    }
+
+    // Test when there are 5 days or less to the concert
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5}) // Days 5 or less
+    void givenBackstagePass_when5DaysOrLessToUpdateQuality_thenQualityIncreasesByThree(int sellIn) {
+        // Arrange
+        int initialQuality = 20;
+        Item backstagePass = new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, initialQuality);
+        Item[] items = {backstagePass};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(initialQuality + 3, items[0].quality,
+            "Backstage passes quality should increase by 3 when there are 5 days or less to the concert");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, -10})
+    void givenBackstagePassOnDayOfConcert_whenUpdatingQuality_thenQualityDropsToZero(int sellIn) {
+        // Arrange
+        int initialQuality = 25; // Initial quality doesn't matter as it should drop to 0
+        Item backstagePass = new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, initialQuality);
+        Item[] items = {backstagePass};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(0, items[0].quality,
+            "Backstage passes quality should drop to 0 on the day of the concert (sellIn = " + sellIn + ")");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, -10, -15})
+    void givenBackstagePassAfterConcert_whenUpdatingQuality_thenQualityRemainsZero(int sellIn) {
+        // Arrange
+        int initialQuality = 0; // Quality should remain 0
+        Item backstagePass = new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, initialQuality);
+        Item[] items = {backstagePass};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(0, items[0].quality,
+            "Backstage passes quality should remain 0 after the concert (sellIn = " + sellIn + ")");
+    }
+
+    // Test when there are more than 10 days to the concert
+    @ParameterizedTest
+    @ValueSource(ints = {11, 12, 15, 20}) // Days more than 10
+    void givenBackstagePass_whenMoreThan10DaysToUpdateQuality_thenQualityIncreasesByOne(int sellIn) {
+        // Arrange
+        int initialQuality = 20;
+        Item backstagePass = new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, initialQuality);
+        Item[] items = {backstagePass};
+        GildedRose app = new GildedRose(items);
+
+        // Act
+        app.updateQuality();
+
+        // Assert
+        assertEquals(initialQuality + 1, items[0].quality,
+            "Backstage passes quality should increase by 1 when there are more than 10 days to the concert");
+    }
 }
